@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   next()
 })
 const server = http.createServer(app);
-const io = require('socket.io')(server, { origins: '*:*'});
+const io = require('socket.io')(server);
 
 
 app.use(router);
