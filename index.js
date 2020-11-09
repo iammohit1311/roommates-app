@@ -2,22 +2,30 @@ const http = require('http');
 const express = require('express');
 /* const socketio = require('socket.io'); */
 const cors = require('cors');
+const cors_proxy = require('cors-anywhere');
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 
 const router = require('./router');
 
 const app = express();
-app.use(cors());
+/* app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   res.header("Access-Control-Allow-Credentials", "true")
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH")
   next()
-})
+}) */
+
+cors_proxy.createServer({
+  originWhitelist: [], // Allow all origins
+  requireHeader: ['origin', 'x-requested-with'],
+  removeHeaders: ['cookie', 'cookie2']
+}).listen(process.env.PORT || 5000);
+
 const server = http.createServer(app);
-const io = require('socket.io')(server, { origins: '*:*'});
+const io = require('socket.io')(server);
 
 
 app.use(router);
