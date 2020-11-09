@@ -14,11 +14,20 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
 })
-/* const server = http.createServer(app); */
-/* const io = socketio(server, { origins: '*:*' }); */
+const server = http.createServer(app);
 
-const server = app.listen(process.env.PORT || 5000)
-const io = require('socket.io').listen(server)
+const io = require('socket.io')(server, {
+  handlePreflightRequest: (req, res) => {
+    const headers = {
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Origin": req.headers.origin,
+      "Access-Control-Allow-Credentials": true  
+    };
+    res.writeHead(200, headers);
+    res.end();
+  }
+});
+
 
 app.use(router);
 
@@ -56,4 +65,4 @@ io.on('connect', (socket) => {
   })
 });
 
-/* server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`)); */
+server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));
