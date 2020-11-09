@@ -17,7 +17,7 @@ app.use(function(req, res, next) {
 const server = http.createServer(app);
 const io = socketio(server);
 
-io.origins('*:*')
+/* io.origins('*:*') */
 app.use(router);
 
 io.on('connect', (socket) => {
