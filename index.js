@@ -9,24 +9,15 @@ const router = require('./router');
 
 const app = express();
 app.use(cors());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*:*")
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  res.header("Access-Control-Allow-Credentials", true)
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH")
   next()
 })
 const server = http.createServer(app);
-
-const io = require('socket.io')(server, {
-  handlePreflightRequest: (req, res) => {
-    const headers = {
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Origin": req.headers.origin,
-      "Access-Control-Allow-Credentials": true  
-    };
-    res.writeHead(200, headers);
-    res.end();
-  }
-});
+const io = require('socket.io')(server, { origins: '*:*'});
 
 
 app.use(router);
