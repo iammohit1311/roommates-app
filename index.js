@@ -9,13 +9,13 @@ const router = require('./router');
 
 const app = express();
 app.use(cors());
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   res.header("Access-Control-Allow-Credentials", true)
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH")
   next()
-})
+}) */
 const server = http.createServer(app);
 const io = require('socket.io')(server, { origins: '*:*'});
 
