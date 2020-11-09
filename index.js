@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
   next()
 })
 const server = http.createServer(app);
-const io = socketio(server);
+const io = socketio(server, { origins: '*:*' });
 
 /* io.origins('*:*') */
 app.use(router);
