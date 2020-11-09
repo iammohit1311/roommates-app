@@ -1,6 +1,6 @@
 const http = require('http');
 const express = require('express');
-const socketio = require('socket.io');
+/* const socketio = require('socket.io'); */
 const cors = require('cors');
 
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
@@ -14,10 +14,12 @@ app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
 })
-const server = http.createServer(app);
-const io = socketio(server, { origins: '*:*' });
+/* const server = http.createServer(app); */
+/* const io = socketio(server, { origins: '*:*' }); */
 
-/* io.origins('*:*') */
+const server = app.listen(process.env.PORT || 5000)
+const io = require('socket.io').listen(server)
+
 app.use(router);
 
 io.on('connect', (socket) => {
@@ -54,4 +56,4 @@ io.on('connect', (socket) => {
   })
 });
 
-server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`));
+/* server.listen(process.env.PORT || 5000, () => console.log(`Server has started.`)); */
